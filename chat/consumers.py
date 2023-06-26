@@ -11,10 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from django.urls import path, include
-from . import views
 
-urlpatterns = [
-    path('', views.index, name='index'),
-    path("<str:room_name>/", views.room, name="room"),
-]
+# chat/consumers.py
+import json
+
+from channels.generic.websocket import WebsocketConsumer
+
+
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+
+    def disconnect(self, close_code):
+        pass
+
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+
+        self.send(text_data=json.dumps({"message": message}))
