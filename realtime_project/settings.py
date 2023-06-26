@@ -31,12 +31,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # custom apps
+    'chat.apps.ChatConfig',
+
+    # third party apps
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'realtime_project.wsgi.application'
+ASGI_APPLICATION = 'realtime_project.asgi.application'
 
 
 # Database
