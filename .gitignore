@@ -2,3 +2,6 @@
 *__pycache__/
 db.sqlite3
 Pipfile.lock
+staticfiles/
+node_modules/
+package-lock.json
