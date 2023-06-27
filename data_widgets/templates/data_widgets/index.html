@@ -34,14 +34,56 @@
     </div>
     
 <script>
-    var options = {
+   
+</script>
+
+<script>
+     console.log(window  .location.host)
+    let socket = new WebSocket("ws://"+ window.location.host +"/ws/data_widgets/");
+
+socket.onopen = function(e) {
+  alert("[open] Connection established");
+  alert("Sending to server");
+  socket.send("My name is John");
+};
+
+let arr = []
+socket.onmessage = function(event) {
+  console.log(`[message] Data received from server: ${event.data}`);
+  if( arr.length > 9){arr.shift()}
+  arr.push(parseInt(event.data))
+    chart.updateSeries([{
+        label: 'Series 1',
+        data: arr
+    }])
+};
+
+socket.onclose = function(event) {
+  if (event.wasClean) {
+    alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+  } else {
+    // e.g. server process killed or network down
+    // event.code is usually 1006 in this case
+    alert('[close] Connection died');
+  }
+};
+
+socket.onerror = function(error) {
+  alert(`[error]`);
+};
+    
+
+    
+        // data_vals.push(parseInt($data))
+        // console.log(data_vals)
+        var options = {
         chart: {
             type: 'line'
         },
-        series: [{
-            name: 'sales',
-            data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-        }],
+        series: [],
+        noData: {
+            text: 'Loading...'
+        },
         xaxis: {
             categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
         }
@@ -50,6 +92,8 @@
     var chart = new ApexCharts(document.querySelector("#chart"), options);
 
     chart.render();
+    
+ 
 </script>
 </body>
 </html>
